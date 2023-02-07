@@ -1,10 +1,10 @@
 # p_ad
 python ms ad lab
-
+A lab using python-ldap lib to create connection with Active Directory
 
 ## Setup
 ```console
-source env/bin/active && pip install -r requirements.txt
+source env/bin/activate && pip install -r requirements.txt
 ```
 
 ## Running
