@@ -1,6 +1,6 @@
 # p_ad
-python ms ad lab
-A lab using python-ldap lib to create connection with Active Directory
+
+lab using python-ldap lib to create connection with Active Directory
 
 ## Setup
 ```console
