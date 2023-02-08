@@ -8,3 +8,4 @@ class State(Enum):
 
     def __str__(self) -> str:
         return f'state: {self.name}'
+
