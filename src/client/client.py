@@ -19,7 +19,7 @@ class Client:
     def __init__(self, uri: str, log_level=0, debug=False) -> None:
         """ Initialize a new LDAP object """
 
-        self.connection = initialize(uri, log_level, sys.stderr)
+        self.connection = ldap.initialize(uri, log_level, sys.stderr)
         self.connection.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
         self.connection.set_option(ldap.OPT_REFERRALS, 0)
 
@@ -40,7 +40,7 @@ class Client:
         self.connection.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
         self.connection.start_tls_s()
 
-    def search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope=Scope.SubTree) -> List[str]|None:
+    def search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope=Scope.SubTree) -> Optional[List[str]]:
         """ Perform LDAP search on target DN, if attributes are None all objects will return """
 
         assert self.state == State.Signed
