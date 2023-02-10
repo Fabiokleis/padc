@@ -2,7 +2,8 @@ import sys, ldap
 from typing import List, Dict, Tuple, Optional, Any
 from enum import Enum
 
-from ldap.modlist import modifyModlist
+from ldap.modlist import modifyModlist, addModlist
+from ldap.dn import str2dn
 from .state import State
 
 class Scope(Enum):
@@ -56,6 +57,19 @@ class Client:
         modlist = modifyModlist(old, new)
         
         self.connection.modify_s(target_dn, modlist)
+
+
+    def add(self, target_dn: str, entry: Dict[str, Any]) -> None:
+        """ Create a new entry at target DN """
+        
+        assert self.state == State.Signed
+
+        modlist = addModlist(entry)
+        self.connection.add_s(target_dn, modlist)
+
+    def parse_dn(self, target_dn: str) -> List[Any]:
+        """ Parse target DN to sepated elements """
+        return str2dn(target_dn, ldap.DN_FORMAT_LDAPV3)
 
     def bind(self, new_bind: str, new_pass: str) -> None:
         """ Bind to connected server """

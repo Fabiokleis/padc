@@ -1,6 +1,6 @@
 from client import Client, Scope
 from enum import Enum
-from typing import List, Dict, Any
+from typing import List, Dict, Optional, Any
 from .error_handler import catch_exception
 
 class AccountControlCode(Enum):
@@ -30,6 +30,34 @@ class MsAD(Client):
     def connect(self) -> None:
         """ Should connect to ad server """
         self.bind(self.bind_dn, self.auth_pass)
+    
+    @catch_exception
+    def create_user(self, user_name: str, user_password: str, acc: Optional[AccountControlCode], exp: int=0, lockout: int=0) -> None:
+        """ Should create a new user under Active Directory """
+        name,sn = user_name.split()
+        parsed_dn = self.parse_dn(self.base_dn)
+        principal_name = f"{name}@{parsed_dn[0][0][1]}.{parsed_dn[1][0][1]}"
+
+        target_dn = f"CN={user_name},CN=Users,{self.base_dn}"
+        entry = {}
+        entry['objectclass'] = [b'top', b'person', b'organizationalPerson', b'user']
+        entry['cn'] = user_name.encode('utf-8')
+        entry['sn'] = sn.encode('utf-8')
+        entry['unicodePwd'] = f'"{user_password}"'.encode('utf-16-le')
+        entry['sAMAccountName'] = name.encode('utf-8')
+        entry['givenName'] = name.encode('utf-8')
+        entry['userPrincipalName'] = principal_name.encode('utf-8')
+        entry['displayName'] = user_name.encode('utf-8')
+    
+        if acc is not None and type(acc) == AccountControlCode:
+            entry['userAccountControl'] = f'{acc.value}'.encode('utf-8')
+        else:
+            entry['userAccountControl'] = f'{AccountControlCode.NormalAccount.value}'.encode('utf-8')
+
+        entry['lockoutTime'] = f'{lockout}'.encode('utf-8')
+        entry['accountExpires'] = f'{exp}'.encode('utf-8')
+
+        self.add(target_dn, entry)
 
     @catch_exception 
     def get_entries(self, s_filter: str, attr: List[str], scope: Scope=Scope.SubTree) -> List[Dict[Any, Any]]:
