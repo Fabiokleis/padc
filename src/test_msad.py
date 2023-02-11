@@ -19,27 +19,68 @@ class MsADTest(unittest.TestCase):
         self.auth_pass = config["AUTH_PASS"]
         self.ca_path = None #config["CA_PATH"] 
         self.ldap = MsAD(self.uri, self.base_dn, self.bind_dn, self.auth_pass)
+        self.new_user = "unittester pythonic"
+        self.new_passwd = "unittestPassword@123"
+        self.filter = '(&(objectClass=User)(sAMAccountName=unittester))'
 
     def test_connect_to_ad_server(self):
         """ Should connect to ad server """
-        self.assertTrue(isinstance(self.ldap.start_tls(self.ca_path), LdapSuccessResult))
-        self.assertTrue(self.ldap.connect(), str)
-        self.assertTrue(isinstance(self.ldap.close(), LdapSuccessResult))
+        tls = self.ldap.start_tls(self.ca_path)
+        self.assertTrue(isinstance(tls, LdapSuccessResult))
+        print(tls.unwrap())
+
+        conn = self.ldap.connect()
+        print(conn)
+        self.assertTrue(isinstance(conn, str))
+
+        close = self.ldap.close()
+        self.assertTrue(isinstance(close, LdapSuccessResult))
+        print(close.unwrap())
  
-    def test_create_user(self):
+    def test_create_account(self):
         """ Should create a new user in ad server """
         self.assertTrue(isinstance(self.ldap.start_tls(self.ca_path), LdapSuccessResult))
         self.assertTrue(self.ldap.connect(), str)
-        self.assertTrue(self.ldap.create_user("unitters pythonic", "uniTtest@213", Acc.NormalAccount), str)
+
+        user = self.ldap.create_user(self.new_user, self.new_passwd, Acc.NormalAccount)
+        self.assertTrue(isinstance(user, str))
+        print(user)
+
         self.assertTrue(isinstance(self.ldap.close(), LdapSuccessResult))
 
     def test_disable_account(self):
         """ Should disable a user account by modify userAccountCode """
         self.assertTrue(isinstance(self.ldap.start_tls(self.ca_path), LdapSuccessResult))
         self.assertTrue(self.ldap.connect(), str)
-        s_filter='(&(objectClass=User)(sAMAccountName=unitters))'
-        self.assertTrue(self.ldap.modify_account_control(s_filter, Acc.DisableAccount), str)
+
+        mod = self.ldap.modify_account_control(self.filter, Acc.DisableAccount)
+        self.assertTrue(isinstance(mod, str))
+        print(mod)
+
         self.assertTrue(isinstance(self.ldap.close(), LdapSuccessResult))
+
+    def test_enable_account(self):
+        """ Should enable a user account by modify userAccountCode """
+        self.assertTrue(isinstance(self.ldap.start_tls(self.ca_path), LdapSuccessResult))
+        self.assertTrue(self.ldap.connect(), str)
+
+        mod = self.ldap.modify_account_control(self.filter, Acc.NormalAccount)
+        self.assertTrue(isinstance(mod, str))
+        print(mod)        
+
+        self.assertTrue(isinstance(self.ldap.close(), LdapSuccessResult))
+  
+    def test_delete_account(self):
+        """ Should delete a user account """
+        self.assertTrue(isinstance(self.ldap.start_tls(self.ca_path), LdapSuccessResult))
+        self.assertTrue(self.ldap.connect(), str)
+
+        user = self.ldap.delete_user(self.new_user)
+        self.assertTrue(isinstance(user, str))
+        print(user)
+
+        self.assertTrue(isinstance(self.ldap.close(), LdapSuccessResult))
+
 
 if __name__ == '__main__':
     unittest.main()
