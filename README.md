@@ -24,5 +24,5 @@ BASE_DN='DC=RTS,DC=LOCAL'
 ```
 
 ```console
-cd src && python -m unittest test.py
+cd src && python -m unittest -v test_msad.py
 ```
