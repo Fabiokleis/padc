@@ -7,6 +7,7 @@ setup(
     author="Fabio Kleis",
     author_email="fabiohkrc@gmail.com",
     url="https://github.com/Fabiokleis/p_ad",
+    license='MIT',
     package_dir={'': 'src'},
     packages=find_packages(
                 where='src',
