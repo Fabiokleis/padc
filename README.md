@@ -26,3 +26,8 @@ BASE_DN='DC=RTS,DC=LOCAL'
 ```console
 python -m unittest -v tests.test_msad
 ```
+
+## Building
+```console
+python -m build
+```

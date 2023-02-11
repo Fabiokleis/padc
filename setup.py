@@ -1,13 +1,22 @@
 from setuptools import setup, find_packages
 
+
+with open("README.md", 'r') as f:
+    long_description = f.read()
+
+with open("LICENSE", 'r') as f:
+    l = f.read()
+
 setup(
     name="p_ad",
-    version="0.1",
+    version="0.1.1",
     description="lab using python-ldap lib to create connection with Active Directory",
     author="Fabio Kleis",
     author_email="fabiohkrc@gmail.com",
     url="https://github.com/Fabiokleis/p_ad",
-    license='MIT',
+    license=l,
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     package_dir={'': 'src'},
     packages=find_packages(
                 where='src',
