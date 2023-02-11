@@ -5,4 +5,4 @@
 set -e
 
 source ./env/bin/activate
-python ./src/main.py
+cd src && python ./main.py
