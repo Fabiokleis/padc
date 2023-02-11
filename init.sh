@@ -2,7 +2,7 @@
 
 ## run main.py
 
-set -e
+set -xe
 
 source ./env/bin/activate
 python -m cli
