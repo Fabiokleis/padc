@@ -2,7 +2,7 @@ import unittest
 from msad import MsAD
 from msad import AccountControlCode as Acc
 from dotenv import dotenv_values
-from error_handler import LdapSuccessResult
+from client.error_handler import LdapSuccessResult
 
 # load .env variables
 # local Active Directory settings

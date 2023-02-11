@@ -38,8 +38,8 @@ def delete_account(uri, base_dn, bind_dn, auth_pass, ca_path):
     print(ldap.delete_user("unittester pythonic"))
     print(ldap.close().unwrap())
 
-
-if __name__ == "__main__":
+def run():
+    print(f"Running {__name__}")
     uri = config["URI"]
     base_dn = config["BASE_DN"]
     bind_dn = config["BIND_DN"]
@@ -50,3 +50,5 @@ if __name__ == "__main__":
     #disable_account(uri, base_dn, bind_dn, auth_pass, ca_path)
     #enable_account(uri, base_dn,bind_dn,auth_pass, ca_path)
     #delete_account(uri, base_dn, bind_dn, auth_pass, ca_path)
+
+

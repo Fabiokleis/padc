@@ -5,7 +5,7 @@ from enum import Enum
 from ldap.modlist import modifyModlist, addModlist
 from ldap.dn import str2dn
 from .state import State
-from error_handler import catch_exception, LdapSuccessResult
+from .error_handler import catch_exception, LdapSuccessResult
 
 class Scope(Enum):
     """ Search Scope interface """

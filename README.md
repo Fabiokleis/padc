@@ -4,7 +4,7 @@ lab using python-ldap lib to create connection with Active Directory
 
 ## Setup
 ```console
-python -m venv env && source env/bin/activate && pip install -r requirements.txt
+python -m venv env && source env/bin/activate && pip install -e .
 ```
 
 ## Running
@@ -13,7 +13,7 @@ chmod +x init.sh && ./init.sh
 ```
 
 ## Testing
-Create .env file inside src/
+Create .env file inside root directory
 ### .env
 ```
 URI='ldap://192.168.0.213'
@@ -24,5 +24,5 @@ BASE_DN='DC=RTS,DC=LOCAL'
 ```
 
 ```console
-cd src && python -m unittest -v test_msad.py
+python -m unittest -v tests.test_msad
 ```
