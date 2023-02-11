@@ -44,7 +44,7 @@ class Client:
 
         self.connection.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
         self.connection.start_tls_s()
-        return LdapSuccessResult("Could start tls ldap server connection")
+        return LdapSuccessResult("Started tls ldap server connection")
 
     @catch_exception
     def search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope=Scope.SubTree) -> LdapSuccessResult:
@@ -63,7 +63,7 @@ class Client:
         modlist = modifyModlist(old, new)
         
         self.connection.modify_s(target_dn, modlist)
-        return LdapSuccessResult(f"Could modify {target_dn}")
+        return LdapSuccessResult(f"Modified {target_dn}")
 
     @catch_exception
     def add(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
@@ -73,7 +73,16 @@ class Client:
 
         modlist = addModlist(entry)
         self.connection.add_s(target_dn, modlist)
-        return LdapSuccessResult(f"Could add new entry at {target_dn}")
+        return LdapSuccessResult(f"Added new entry at {target_dn}")
+
+    @catch_exception
+    def delete(self, target_dn: str) -> LdapSuccessResult:
+        """ Delete entry based on target DN """
+        assert self.state == State.Signed, "Cannot perform delete without signed connection"
+
+        self.connection.delete_s(target_dn)
+        return LdapSuccessResult(f"Deleted {target_dn} entry")
+
 
     @catch_exception
     def parse_dn(self, target_dn: str) -> LdapSuccessResult:
@@ -86,10 +95,10 @@ class Client:
 
         assert self.state == State.Connected, "Cannot perform bind without connection"
 
-        self.connection.simple_bind(new_bind, new_pass)
+        self.connection.simple_bind_s(new_bind, new_pass)
         self.state = State.Signed
 
-        return LdapSuccessResult(f"Could bind in ldap server using {new_bind} and {new_pass}")
+        return LdapSuccessResult(f"Binded in ldap server using {new_bind} and {new_pass}")
 
     @catch_exception
     def close(self) -> LdapSuccessResult:
@@ -99,5 +108,5 @@ class Client:
         self.connection.unbind_s()
         self.state = State.Disconnected
 
-        return LdapSuccessResult("Could unbind connection in ldap server")
+        return LdapSuccessResult("Unbinded connection in ldap server")
 
