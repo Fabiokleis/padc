@@ -1,34 +1,24 @@
 from msad import MsAD 
 from msad import AccountControlCode as Acc
-from msad.msad import AccountControlCode
+from dotenv import dotenv_values
 
+# load .env variables
 # local Active Directory settings
-uri = 'ldap://192.168.0.213'
-bind_dn = 'administrator@rts.local'
-auth_pass = 'Mypasswd@123'
-ca_path = None #'/etc/ca-certificates/trust-source/anchors/ca-test.pem'
-base_dn = 'DC=RTS,DC=LOCAL'
-s_filter = '(&(objectClass=User)(sAMAccountName=tester))'
-attr = ['userAccountControl', 'givenName', 'cn', 'dn', 'pwdLastSet']
+config = dotenv_values(".env")
 
-def create_user() -> None:
-    """ Should create user at Active Directory """
-    ldap = MsAD(uri, base_dn, bind_dn, auth_pass)
-    ldap.start_tls(ca_path)
-    ldap.connect()
+def create_user(uri, base_dn, bind_dn, auth_pass, ca_path):
+    ldap = MsAD(uri, base_dn, bind_dn, auth_pass, False)
+    print(ldap.start_tls(ca_path).unwrap())
+    print(ldap.connect())
+    print(ldap.create_user("unitters3332 pythonic", "uniTtest@213", Acc.NormalAccount))
+    print(ldap.close().unwrap())
 
-    new_user = "testerpy pythontester"
-    new_passwd = "Python@135"
-    ldap.create_user(new_user, new_passwd, Acc.NormalAccount)
-
-    ldap.close()
-
-def main():
-    ldap = MsAD(uri, base_dn, bind_dn, auth_pass)
-    ldap.start_tls(ca_path)
-    ldap.connect()
-    ldap.modify_account_control(s_filter, Acc.DisableAccount)
-    ldap.close()
 
 if __name__ == "__main__":
-    create_user()
+    uri = config["URI"]
+    base_dn = config["BASE_DN"]
+    bind_dn = config["BIND_DN"]
+    auth_pass = config["AUTH_PASS"]
+    ca_path = None #config["CA_PATH"]
+
+    create_user(uri, base_dn, bind_dn, auth_pass, ca_path)
