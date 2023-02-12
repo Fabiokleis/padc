@@ -9,9 +9,21 @@ class AccountControlCode(Enum):
 
     NormalAccount = 512
     DisableAccount = 514
+        
 
     def __repr__(self) -> str:
         return f'AccountControl: {self.name}'
+
+
+def match_code(code: int) -> AccountControlCode:
+        """ Match the possible code, return Normal Account variant if code dont matchs any of then """
+        match code:
+            case 512:
+                return AccountControlCode.NormalAccount
+            case 514:
+                return AccountControlCode.DisableAccount
+            case _:
+                return AccountControlCode.NormalAccount
 
 
 class MsAD(Client):
