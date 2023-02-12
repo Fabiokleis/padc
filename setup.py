@@ -35,9 +35,16 @@ setup(
         'pyasn1==0.4.8',
         'pyasn1-modules==0.2.8',
         'python-dotenv==0.21.1',
-        'python-ldap==3.4.3'
+        'python-ldap==3.4.3',
+        'click==8.1.3',
+        'colorama==0.4.6',
+        'commonmark==0.9.1',
+        'Pygments==2.14.0',
+        'rich==12.6.0',
+        'shellingham==1.5.0.post1',
+        'typer==0.7.0'
     ],
     entry_points={
-        'console_scripts': ['pacd=cli.__main__:main']
+        'console_scripts': ['padc=cli.__main__:main']
     }
 )
