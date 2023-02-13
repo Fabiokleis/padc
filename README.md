@@ -29,7 +29,7 @@ p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipula
 `padc` has in users subcommand some basic operations:
 
 ```console
-./env/bin/pacd users create -f .env "Pingu pythonico" "pingupassword@123" -c 514 --debug
+./env/bin/pacd users create -f .env "Pingu pythonico" "Pingupassword@123" -c 514 --debug
 ```
 ```console
 ./env/bin/pacd users create-ldif -f .env --ldif example.ldif
