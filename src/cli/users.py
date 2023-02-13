@@ -6,6 +6,46 @@ from pathlib import Path
 
 users = typer.Typer(help="Users subcommand")
 
+@users.command("create-ldif")
+def cli_create_from_ldif(
+        from_file: Optional[Path] = typer.Option(
+            None, 
+            "--file",
+            "-f",
+            help="A .env file or load from host envvars by ignoring this argument",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            writable=False,
+            readable=True,
+            resolve_path=True,
+        ),
+        from_ldif: Optional[Path] = typer.Option(
+            ..., 
+            "--ldif",
+            "-l",
+            help="A ldif file to create a new user",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            writable=False,
+            readable=True,
+            resolve_path=True,
+        ),
+        debug: bool = typer.Option(False, help="Enable debug mode")
+        ):
+    """ Create a new user account from ldif in Microsoft Active Directory Server """
+    config = {}
+    if from_file:
+        config = load_env_variables_from_file(str(from_file))
+    else:
+        config = load_env_variables()
+
+    config = ensure_loaded_variables(config)
+
+    create_user_from_ldif(str(from_ldif), config, debug)
+
+
 @users.command("create")
 def cli_create_user(
         from_file: Optional[Path] = typer.Option(
@@ -20,7 +60,7 @@ def cli_create_user(
             readable=True,
             resolve_path=True,
         ),
-        name: str = typer.Argument(..., help="A sn attribute value, don't pass a single name"), 
+        name: str = typer.Argument(..., help="A CN attribute value, don't pass a single name"), 
         password: str = typer.Argument(..., help="A user account password, unicodePwd will be create"),
         account_control_code: int = typer.Option(
             512,
@@ -58,7 +98,7 @@ def cli_delete_user(
             readable=True,
             resolve_path=True,
         ),
-        name: str = typer.Argument(..., help="A sn attribute value, don't pass a single name"),
+        name: str = typer.Argument(..., help="A CN attribute value, don't pass a single name"),
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
@@ -88,7 +128,7 @@ def cli_disable_user(
             readable=True,
             resolve_path=True,
         ),
-        name: str = typer.Argument(..., help="A sAMAccountName attribute value, don't pass SN "), 
+        name: str = typer.Argument(..., help="A sAMAccountName attribute value, don't pass CN "), 
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
@@ -118,7 +158,7 @@ def cli_enable_user(
             readable=True,
             resolve_path=True,
         ),
-        name: str = typer.Argument(..., help="A sAMAccountName attribute value, don't pass SN "), 
+        name: str = typer.Argument(..., help="A sAMAccountName attribute value, don't pass CN "), 
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 

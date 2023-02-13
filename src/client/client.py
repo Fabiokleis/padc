@@ -4,6 +4,7 @@ from enum import Enum
 
 from ldap.modlist import modifyModlist, addModlist
 from ldap.dn import str2dn
+from ldif import LDIFParser, LDIFRecordList
 from .state import State
 from .error_handler import catch_exception, LdapSuccessResult
 
@@ -88,6 +89,14 @@ class Client:
     def parse_dn(self, target_dn: str) -> LdapSuccessResult:
         """ Parse target DN to sepated elements """
         return LdapSuccessResult(str2dn(target_dn, ldap.DN_FORMAT_LDAPV3))
+
+    @catch_exception
+    def parse_ldif(self, ldif_path: str) -> LdapSuccessResult:
+        """ Parse a ldif file, return all records inside payload """
+        parser = LDIFRecordList(open(ldif_path, "r"))
+        parser.parse()
+        return LdapSuccessResult(parser.all_records)
+
 
     @catch_exception
     def bind(self, new_bind: str, new_pass: str) -> LdapSuccessResult:
