@@ -38,6 +38,14 @@ def create_user(name: str, passwd: str, config: Dict[str, str], acc: Acc, debug 
     print(ldap.create_user(name, passwd, acc))
     print(ldap.close().unwrap())
 
+def create_user_from_ldif(from_ldif: str, config: Dict[str, str], debug = False):
+    """ Create user in ms ad server from ldif file """
+    ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
+    print(ldap.start_tls(config["CA_PATH"]).unwrap())
+    print(ldap.connect())
+    print(ldap.create_user_from_ldif(from_ldif))
+    print(ldap.close().unwrap())
+
 def modify_acc(name: str, acc: AccountControlCode, config: Dict[str, str], debug = False):
     """ Enable/Disable user account in ms ad server """
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)

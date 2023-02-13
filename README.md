@@ -32,6 +32,9 @@ p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipula
 ./env/bin/pacd users create -f .env "Username UserSname" "UserDificultPassword123" -c 514 --debug
 ```
 ```console
+./env/bin/pacd users create-ldif -f .env --ldif example.ldif
+```
+```console
 ./env/bin/pacd users delete --file .env "Username"
 ```
 ```console
