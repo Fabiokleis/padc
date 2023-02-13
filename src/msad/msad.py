@@ -16,7 +16,7 @@ class AccountControlCode(Enum):
 
 
 def match_code(code: int) -> AccountControlCode:
-        """ Match the possible code, return Normal Account variant if code dont matchs any of then """
+        """ Match the possible code, return Normal Account variant if code doens't matchs any of them """
         match code:
             case 512:
                 return AccountControlCode.NormalAccount
