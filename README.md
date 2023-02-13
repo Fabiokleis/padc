@@ -29,19 +29,19 @@ p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipula
 `padc` has in users subcommand some basic operations:
 
 ```console
-./env/bin/pacd users create -f .env "Username UserSname" "UserDificultPassword123" -c 514 --debug
+./env/bin/pacd users create -f .env "Pingu pythonico" "pingupassword@123" -c 514 --debug
 ```
 ```console
 ./env/bin/pacd users create-ldif -f .env --ldif example.ldif
 ```
 ```console
-./env/bin/pacd users delete --file .env "Username"
+./env/bin/pacd users delete --file .env "Pingu"
 ```
 ```console
-./env/bin/pacd users enable -f .env "Username" --debug
+./env/bin/pacd users enable -f .env "Pingu" --debug
 ```
 ```console
-./env/bin/pacd users disable "Username" --debug
+./env/bin/pacd users disable "Pingu" --debug
 ```
 
 ## Testing
