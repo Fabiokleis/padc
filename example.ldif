@@ -1,0 +1,11 @@
+dn: cn=Pingu pythonico,cn=Users,dc=rts,dc=local
+cn: Pingu pythonico
+sn: pythonico
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+sAMAccountName: Pingu
+givenName: Pingu
+userPrincipalName: Pingu
+displayName: Pingu
