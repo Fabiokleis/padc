@@ -195,7 +195,7 @@ def cli_add_to_group(
         ):
 
     """ Add a user account to group in Microsoft Active Directory Server """
-    print(f"This {name} account will be a memeber of {groupdn} group")
+    print(f"This {name} account will be a member of {groupdn} group")
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))
