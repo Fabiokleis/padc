@@ -46,6 +46,15 @@ def create_user_from_ldif(from_ldif: str, config: Dict[str, str], debug = False)
     print(ldap.create_user_from_ldif(from_ldif))
     print(ldap.close().unwrap())
 
+def add_account_to_group(name: str, group_dn: str, config: Dict[str, str], debug = False):
+    """ Add a user account to a group of Active directory server """
+    ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
+    print(ldap.start_tls(config["CA_PATH"]).unwrap())
+    print(ldap.connect())
+    s_filter = f"(&(objectClass=User)(sAMAccountName={name}))"
+    print(ldap.add_account_to_group(s_filter, group_dn))
+    print(ldap.close().unwrap())
+
 def modify_acc(name: str, acc: AccountControlCode, config: Dict[str, str], debug = False):
     """ Enable/Disable user account in ms ad server """
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)

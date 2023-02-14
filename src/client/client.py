@@ -54,10 +54,18 @@ class Client:
         assert self.state == State.Signed, "Cannot perform search without a signed connection"
         entry = self.connection.search_s(base, scope.value, s_filter, attr, 0)
         return LdapSuccessResult(entry)
-    
+   
     @catch_exception
-    def modify(self, target_dn: str, entry: Tuple[Dict[str, Any], Dict[str, Any]]) -> LdapSuccessResult:
-        """ Modify entries by modlist operation on it based on argument entry """
+    def modify_add(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
+        """ Modify entry by modlist add operation on it at target_dn"""
+        assert self.state == State.Signed, "Cannot perform modify without a signed connection"
+        modlist = [ (ldap.MOD_ADD, k, v) for k,v in entry.items() ]
+        self.connection.modify_s(target_dn, modlist)
+        return LdapSuccessResult(f"Modified {target_dn}")
+
+    @catch_exception
+    def modify_replace(self, target_dn: str, entry: Tuple[Dict[str, Any], Dict[str, Any]]) -> LdapSuccessResult:
+        """ Modify entries by modlist replace (delete and add) operation on it based on argument entry """
 
         assert self.state == State.Signed, "Cannot perform modify without a signed connection"
         old,new = entry

@@ -98,13 +98,21 @@ class MsAD(Client):
         
         entry = (old_acc, new_acc)
         
-        return self.modify(target_dn, entry).unwrap()
+        return self.modify_replace(target_dn, entry).unwrap()
     
     def create_user_from_ldif(self, ldif_path: str) -> str:
+        """ Should create a new user from ldif file """
         all_records = self.parse_ldif(ldif_path).unwrap()
-        print(all_records[0][0])
-        print(all_records[0][1])
         return self.add(all_records[0][0], all_records[0][1]).unwrap()
+
+    def add_account_to_group(self, s_filter, group_dn) -> str:
+        """ Should add user account to AD group """
+        user_entry = self.get_entries(s_filter, ['distinguishedName'])[0]
+        user_dn = user_entry['distinguishedName'][0]
+        entry = {'member': [user_dn]}
+
+        return self.modify_add(group_dn, entry).unwrap()
+
 
     def __str__(self) -> str:
         return f'uri: {self.uri}\nbind_dn: {self.bind_dn}\nauth_pass: {self.auth_pass}\n{self.state}'

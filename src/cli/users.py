@@ -1,3 +1,4 @@
+from click import group
 import typer
 from .users_utils import *
 from msad import match_code,AccountControlCode as Acc
@@ -173,3 +174,34 @@ def cli_enable_user(
     config = ensure_loaded_variables(config)
 
     modify_acc(name, Acc.NormalAccount, config, debug) 
+
+@users.command("add-to-group")
+def cli_add_to_group(
+        from_file: Optional[Path] = typer.Option(
+            None, 
+            "--file",
+            "-f",
+            help="A .env file or load from host envvars by ignoring this argument",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            writable=False,
+            readable=True,
+            resolve_path=True,
+        ),
+        name: str = typer.Argument(..., help="A sAMAccountName attribute value, don't pass CN "), 
+        groupdn: str = typer.Argument(..., help="A group DN attribute value"),
+        debug: bool = typer.Option(False, help="Enable debug mode")
+        ):
+
+    """ Add a user account to group in Microsoft Active Directory Server """
+    print(f"This {name} account will be a memeber of {groupdn} group")
+    config = {}
+    if from_file:
+        config = load_env_variables_from_file(str(from_file))
+    else:
+        config = load_env_variables()
+
+    config = ensure_loaded_variables(config)
+
+    add_account_to_group(name, groupdn, config, debug) 
