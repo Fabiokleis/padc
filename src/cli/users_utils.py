@@ -55,6 +55,15 @@ def add_account_to_group(name: str, group_dn: str, config: Dict[str, str], debug
     print(ldap.add_account_to_group(s_filter, group_dn))
     print(ldap.close().unwrap())
 
+def remove_account_from_group(name: str, group_dn: str, config: Dict[str, str], debug = False):
+    """ Remove user account from a group of Active directory server """
+    ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
+    print(ldap.start_tls(config["CA_PATH"]).unwrap())
+    print(ldap.connect())
+    s_filter = f"(&(objectClass=User)(sAMAccountName={name}))"
+    print(ldap.remove_account_from_group(s_filter, group_dn))
+    print(ldap.close().unwrap())
+
 def modify_acc(name: str, acc: AccountControlCode, config: Dict[str, str], debug = False):
     """ Enable/Disable user account in ms ad server """
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)

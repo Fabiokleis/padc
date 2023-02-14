@@ -113,6 +113,12 @@ class MsAD(Client):
 
         return self.modify_add(group_dn, entry).unwrap()
 
+    def remove_account_from_group(self, s_filter: str, group_dn: str) -> str:
+        """ Should remove user account from a group of ms ad """
+        user_entry = self.get_entries(s_filter, ['distinguishedName'])[0]
+        user_dn = user_entry['distinguishedName'][0]
+        entry = {'member': [user_dn]}
+        return self.modify_delete(group_dn, entry).unwrap()
 
     def __str__(self) -> str:
         return f'uri: {self.uri}\nbind_dn: {self.bind_dn}\nauth_pass: {self.auth_pass}\n{self.state}'

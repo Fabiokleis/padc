@@ -64,6 +64,14 @@ class Client:
         return LdapSuccessResult(f"Modified {target_dn}")
 
     @catch_exception
+    def modify_delete(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
+        """ Modify entry by modlist delete operation on it at target_dn"""
+        assert self.state == State.Signed, "Cannot perform modify without a signed connection"
+        modlist = [ (ldap.MOD_DELETE, k, v) for k,v in entry.items() ]
+        self.connection.modify_s(target_dn, modlist)
+        return LdapSuccessResult(f"Modified {target_dn}")
+
+    @catch_exception
     def modify_replace(self, target_dn: str, entry: Tuple[Dict[str, Any], Dict[str, Any]]) -> LdapSuccessResult:
         """ Modify entries by modlist replace (delete and add) operation on it based on argument entry """
 
