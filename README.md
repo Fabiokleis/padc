@@ -38,6 +38,9 @@ p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipula
 ./env/bin/padc users add-to-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL" --debug
 ```
 ```console
+./env/bin/padc users remove-from-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL"
+```
+```console
 ./env/bin/pacd users delete --file .env "Pingu"
 ```
 ```console
@@ -62,4 +65,3 @@ pip install --upgrade build
 ```console
 python -m build
 ```
-
