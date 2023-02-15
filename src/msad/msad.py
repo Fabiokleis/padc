@@ -100,8 +100,12 @@ class MsAD(Client):
         return self.modify_replace(target_dn, entry).unwrap()
     
     def create_user_from_ldif(self, ldif_path: str) -> str:
-        """ Should create a new user from ldif file """
+        """ Should create a new user from ldif file, if exists unicodePwd this function will encoded it """
         all_records = self.parse_ldif(ldif_path).unwrap()
+        unicode_pwd = all_records[0][1].get('unicodePwd')
+        if unicode_pwd:
+            enc = f'"{unicode_pwd[0].decode()}"'.encode('utf-16-le')
+            all_records[0][1].update({'unicodePwd': [enc]})
         return self.add(all_records[0][0], all_records[0][1]).unwrap()
 
     def add_account_to_group(self, s_filter, group_dn) -> str:

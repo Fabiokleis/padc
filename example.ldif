@@ -9,3 +9,5 @@ sAMAccountName: Pingu
 givenName: Pingu
 userPrincipalName: Pingu
 displayName: Pingu
+unicodePwd: PythonicPassword@123
+userAccountControl: 512
