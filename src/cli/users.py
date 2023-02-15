@@ -1,8 +1,6 @@
-from click import group
 import typer
 from .users_utils import *
-from msad import match_code,AccountControlCode as Acc
-from typing import Optional,Literal
+from msad import match_code, AccountControlCode as Acc
 from pathlib import Path
 
 users = typer.Typer(help="Users subcommand")
@@ -45,7 +43,6 @@ def cli_create_from_ldif(
     config = ensure_loaded_variables(config)
 
     create_user_from_ldif(str(from_ldif), config, debug)
-
 
 @users.command("create")
 def cli_create_user(

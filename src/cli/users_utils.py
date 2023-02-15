@@ -1,11 +1,8 @@
 import os
-from msad import MsAD
-from msad import AccountControlCode as Acc
+from msad import MsAD, AccountControlCode as Acc
 from typing import Dict
 from dotenv import dotenv_values
 from typing import Dict, Optional
-
-from msad.msad import AccountControlCode
 
 # Local Active Directory Settings
 
@@ -64,7 +61,7 @@ def remove_account_from_group(name: str, group_dn: str, config: Dict[str, str], 
     print(ldap.remove_account_from_group(s_filter, group_dn))
     print(ldap.close().unwrap())
 
-def modify_acc(name: str, acc: AccountControlCode, config: Dict[str, str], debug = False):
+def modify_acc(name: str, acc: Acc, config: Dict[str, str], debug = False):
     """ Enable/Disable user account in ms ad server """
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
     print(ldap.start_tls(config["CA_PATH"]).unwrap())

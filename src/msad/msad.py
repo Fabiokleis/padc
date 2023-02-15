@@ -1,3 +1,4 @@
+from cli.users_utils import *
 from client import Client, Scope
 from typing import List, Dict, Optional, Any
 from enum import Enum
@@ -10,10 +11,8 @@ class AccountControlCode(Enum):
     NormalAccount = 512
     DisableAccount = 514
         
-
     def __repr__(self) -> str:
         return f'AccountControl: {self.name}'
-
 
 def match_code(code: int) -> AccountControlCode:
         """ Match the possible code, return Normal Account variant if code doens't matchs any of them """

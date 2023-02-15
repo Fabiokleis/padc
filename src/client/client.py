@@ -4,7 +4,7 @@ from enum import Enum
 
 from ldap.modlist import modifyModlist, addModlist
 from ldap.dn import str2dn
-from ldif import LDIFParser, LDIFRecordList
+from ldif import LDIFRecordList
 from .state import State
 from .error_handler import catch_exception, LdapSuccessResult
 
@@ -100,7 +100,6 @@ class Client:
         self.connection.delete_s(target_dn)
         return LdapSuccessResult(f"Deleted {target_dn} entry")
 
-
     @catch_exception
     def parse_dn(self, target_dn: str) -> LdapSuccessResult:
         """ Parse target DN to sepated elements """
@@ -112,7 +111,6 @@ class Client:
         parser = LDIFRecordList(open(ldif_path, "r"))
         parser.parse()
         return LdapSuccessResult(parser.all_records)
-
 
     @catch_exception
     def bind(self, new_bind: str, new_pass: str) -> LdapSuccessResult:
