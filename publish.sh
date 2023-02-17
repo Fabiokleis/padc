@@ -7,7 +7,7 @@ function show_help() {
     echo "usage: "
     echo "     help                      To show this help message"
     echo "     build                     To build package in dist/"
-    echo "     clean                     To clean pacakge in dist/"
+    echo "     clean                     To clean package in dist/"
     echo "     build test                To build and publish in testpypi"
     echo "     build pypi                To build and publish in pypi"
 }

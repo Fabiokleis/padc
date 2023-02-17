@@ -9,7 +9,7 @@ with open("LICENSE", 'r') as f:
 
 setup(
     name="p_ad",
-    version="0.1.3",
+    version="0.1.5",
     description="lab using python-ldap lib to create connection with Active Directory",
     author="Fabio Kleis",
     author_email="fabiohkrc@gmail.com",
