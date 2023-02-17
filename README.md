@@ -41,7 +41,7 @@ p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipula
 ./env/bin/padc users remove-from-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL"
 ```
 ```console
-./env/bin/pacd users delete --file .env "Pingu"
+./env/bin/pacd users delete --file .env "Pingu pythonico"
 ```
 ```console
 ./env/bin/pacd users enable -f .env "Pingu" --debug
