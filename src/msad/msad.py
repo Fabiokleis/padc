@@ -39,7 +39,7 @@ class MsAD(Client):
         """ Should connect to ad server """
         return self._bind(self.bind_dn, self.auth_pass).unwrap()
 
-    def start_tls(self, ca_path: Optional[str]) -> str:
+    def start_tls(self, ca_path: Optional[str] = None) -> str:
         """ Should start tls over created connection in Active Directory """
         return self._start_tls(ca_path).unwrap()
 

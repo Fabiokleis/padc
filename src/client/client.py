@@ -20,7 +20,7 @@ class Client:
     """ Base class to manipulate LDAP connections """
    
     @catch_exception
-    def __init__(self, uri: str, log_level=0, debug=False) -> None:
+    def __init__(self, uri: str, log_level: int = 0, debug: bool = False) -> None:
         """ Initialize a new LDAP object """
 
         self.debug = debug
@@ -34,7 +34,7 @@ class Client:
         self.state = State.Connected
 
     @catch_exception
-    def _start_tls(self, ca_path=None) -> LdapSuccessResult:
+    def _start_tls(self, ca_path: Optional[str] = None) -> LdapSuccessResult:
         """ Start tls connection by passing a ca-certificate path """
 
         assert self.state == State.Connected, "Cannot start tls without initialized connection"
@@ -48,7 +48,7 @@ class Client:
         return LdapSuccessResult("Started tls ldap server connection")
 
     @catch_exception
-    def _search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope=Scope.SubTree) -> LdapSuccessResult:
+    def _search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope = Scope.SubTree) -> LdapSuccessResult:
         """ Perform LDAP search on target DN, if attributes are None all objects will return """
 
         assert self.state == State.Signed, "Cannot perform search without a signed connection"
