@@ -33,7 +33,7 @@ def cli_create_from_ldif(
         ),
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
-    """ Create a new user account from ldif in Microsoft Active Directory Server """
+    """Create a new user account from ldif in Microsoft Active Directory Server."""
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))
@@ -70,7 +70,7 @@ def cli_create_user(
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
-    """ Create a new user account in Microsoft Active Directory Server """
+    """Create a new user account in Microsoft Active Directory Server."""
     print(f"A new {name} will be created with {password}")
     config = {}
     if from_file:
@@ -100,7 +100,7 @@ def cli_delete_user(
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
-    """ Delete a user account in Microsoft Active Directory Server """
+    """Delete a user account in Microsoft Active Directory Server."""
     print(f"A new {name} will be delete")
     config = {}
     if from_file:
@@ -130,7 +130,7 @@ def cli_disable_user(
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
-    """ Disable a user account in Microsoft Active Directory Server """
+    """Disable a user account in Microsoft Active Directory Server."""
     print(f"This {name} account will be disable")
     config = {}
     if from_file:
@@ -160,7 +160,7 @@ def cli_enable_user(
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
-    """ Enable a user account in Microsoft Active Directory Server """
+    """Enable a user account in Microsoft Active Directory Server."""
     print(f"This {name} account will be enable")
     config = {}
     if from_file:
@@ -191,7 +191,7 @@ def cli_add_to_group(
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
-    """ Add a user account to group in Microsoft Active Directory Server """
+    """Add a user account to group in Microsoft Active Directory Server."""
     print(f"This {name} account will be a member of {groupdn} group")
     config = {}
     if from_file:
@@ -222,7 +222,7 @@ def cli_remove_from_group(
         debug: bool = typer.Option(False, help="Enable debug mode")
         ):
 
-    """ Remove user account from group in Microsoft Active Directory Server """
+    """Remove user account from group in Microsoft Active Directory Server."""
     print(f"This {name} account will be remove from {groupdn} group")
     config = {}
     if from_file:
