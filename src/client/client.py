@@ -34,7 +34,7 @@ class Client:
         self.state = State.Connected
 
     @catch_exception
-    def start_tls(self, ca_path=None) -> LdapSuccessResult:
+    def _start_tls(self, ca_path=None) -> LdapSuccessResult:
         """ Start tls connection by passing a ca-certificate path """
 
         assert self.state == State.Connected, "Cannot start tls without initialized connection"
@@ -48,7 +48,7 @@ class Client:
         return LdapSuccessResult("Started tls ldap server connection")
 
     @catch_exception
-    def search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope=Scope.SubTree) -> LdapSuccessResult:
+    def _search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope=Scope.SubTree) -> LdapSuccessResult:
         """ Perform LDAP search on target DN, if attributes are None all objects will return """
 
         assert self.state == State.Signed, "Cannot perform search without a signed connection"
@@ -56,7 +56,7 @@ class Client:
         return LdapSuccessResult(entry)
    
     @catch_exception
-    def modify_add(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
+    def _modify_add(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
         """ Modify entry by modlist add operation on it at target_dn"""
         assert self.state == State.Signed, "Cannot perform modify without a signed connection"
         modlist = [ (ldap.MOD_ADD, k, v) for k,v in entry.items() ]
@@ -64,7 +64,7 @@ class Client:
         return LdapSuccessResult(f"Modified {target_dn}")
 
     @catch_exception
-    def modify_delete(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
+    def _modify_delete(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
         """ Modify entry by modlist delete operation on it at target_dn"""
         assert self.state == State.Signed, "Cannot perform modify without a signed connection"
         modlist = [ (ldap.MOD_DELETE, k, v) for k,v in entry.items() ]
@@ -72,7 +72,7 @@ class Client:
         return LdapSuccessResult(f"Modified {target_dn}")
 
     @catch_exception
-    def modify_replace(self, target_dn: str, entry: Tuple[Dict[str, Any], Dict[str, Any]]) -> LdapSuccessResult:
+    def _modify_replace(self, target_dn: str, entry: Tuple[Dict[str, Any], Dict[str, Any]]) -> LdapSuccessResult:
         """ Modify entries by modlist replace (delete and add) operation on it based on argument entry """
 
         assert self.state == State.Signed, "Cannot perform modify without a signed connection"
@@ -83,7 +83,7 @@ class Client:
         return LdapSuccessResult(f"Modified {target_dn}")
 
     @catch_exception
-    def add(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
+    def _add(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
         """ Create a new entry at target DN """
         
         assert self.state == State.Signed, "Cannot perform add without a signed connection"
@@ -93,7 +93,7 @@ class Client:
         return LdapSuccessResult(f"Added new entry at {target_dn}")
 
     @catch_exception
-    def delete(self, target_dn: str) -> LdapSuccessResult:
+    def _delete(self, target_dn: str) -> LdapSuccessResult:
         """ Delete entry based on target DN """
         assert self.state == State.Signed, "Cannot perform delete without signed connection"
 
@@ -101,19 +101,19 @@ class Client:
         return LdapSuccessResult(f"Deleted {target_dn} entry")
 
     @catch_exception
-    def parse_dn(self, target_dn: str) -> LdapSuccessResult:
+    def _parse_dn(self, target_dn: str) -> LdapSuccessResult:
         """ Parse target DN to sepated elements """
         return LdapSuccessResult(str2dn(target_dn, ldap.DN_FORMAT_LDAPV3))
 
     @catch_exception
-    def parse_ldif(self, ldif_path: str) -> LdapSuccessResult:
+    def _parse_ldif(self, ldif_path: str) -> LdapSuccessResult:
         """ Parse a ldif file, return all records inside payload """
         parser = LDIFRecordList(open(ldif_path, "r"))
         parser.parse()
         return LdapSuccessResult(parser.all_records)
 
     @catch_exception
-    def bind(self, new_bind: str, new_pass: str) -> LdapSuccessResult:
+    def _bind(self, new_bind: str, new_pass: str) -> LdapSuccessResult:
         """ Bind to connected server """
 
         assert self.state == State.Connected, "Cannot perform bind without connection"
@@ -124,7 +124,7 @@ class Client:
         return LdapSuccessResult(f"Binded in ldap server using {new_bind} and {new_pass}")
 
     @catch_exception
-    def close(self) -> LdapSuccessResult:
+    def _close(self) -> LdapSuccessResult:
         """ Close connection with LDAP server, turn connection object invalid """
 
         assert self.state != State.Disconnected, "Cannot close connection without a connection"
