@@ -38,17 +38,17 @@ class MsAD(Client):
     @catch_exception
     def connect(self) -> ADSuccessResult:
         """Should connect to ad server."""
-        return ADSuccessResult(self._bind(self.bind_dn, self.auth_pass).unwrap())
+        return ADSuccessResult(f'connect::{self._bind(self.bind_dn, self.auth_pass).unwrap()}')
 
     @catch_exception
     def start_tls(self, ca_path: Optional[str] = None) -> ADSuccessResult:
         """Should start tls over created connection in Active Directory."""
-        return ADSuccessResult(self._start_tls(ca_path).unwrap())
+        return ADSuccessResult(f'tls::{self._start_tls(ca_path).unwrap()}')
 
     @catch_exception
     def close(self) -> ADSuccessResult:
         """Should unbind a created connection in Active Directory."""
-        return ADSuccessResult(self._close().unwrap())
+        return ADSuccessResult(f'close::{self._close().unwrap()}')
 
     @catch_exception
     def create_user(
@@ -83,13 +83,14 @@ class MsAD(Client):
         entry['lockoutTime'] = f'{lockout}'.encode('utf-8')
         entry['accountExpires'] = f'{exp}'.encode('utf-8')
 
-        return ADSuccessResult(self._add(target_dn, entry).unwrap())
+        return ADSuccessResult(f'create_user::{self._add(target_dn, entry).unwrap()}')
 
     @catch_exception
     def delete_user(self, user_name: str) -> ADSuccessResult:
         """Should delete user by his username."""
         target_dn = f"CN={user_name},CN=Users,{self.base_dn}"
-        return ADSuccessResult(self._delete(target_dn).unwrap())
+
+        return ADSuccessResult(f'delete_user::{self._delete(target_dn).unwrap()}')
 
     def __get_entries(self, s_filter: str, attr: List[str], scope: Scope=Scope.SubTree) -> List[Dict[Any, Any]]:
         """Get attributes entries by permforming ldap search over a specified filter,base and scope."""
@@ -104,7 +105,7 @@ class MsAD(Client):
             if value:
                 entry.append(value)        
 
-        assert len(entry) >= 1, f"{s_filter} not found any entry"
+        assert len(entry) >= 1, f'__get_entries: {s_filter} not found any entry'
         return entry
 
     @catch_exception
@@ -117,8 +118,9 @@ class MsAD(Client):
         new_acc = {'userAccountControl': [f'{state.value}'.encode()]}
         
         entry = (old_acc, new_acc)
-        
-        return ADSuccessResult(self._modify_replace(target_dn, entry).unwrap())
+        mod =  self._modify_replace(target_dn, entry).unwrap()
+
+        return ADSuccessResult(f'modify_account_control::{mod}')
     
     @catch_exception
     def create_user_from_ldif(self, ldif_path: str) -> ADSuccessResult:
@@ -129,7 +131,9 @@ class MsAD(Client):
             enc = f'"{unicode_pwd[0].decode()}"'.encode('utf-16-le')
             all_records[0][1].update({'unicodePwd': [enc]})
 
-        return ADSuccessResult(self._add(all_records[0][0], all_records[0][1]).unwrap())
+        add = self._add(all_records[0][0], all_records[0][1]).unwrap()
+
+        return ADSuccessResult(f'create_user_from_ldif::{add}')
 
     @catch_exception
     def add_account_to_group(self, s_filter, group_dn) -> ADSuccessResult:
@@ -137,8 +141,9 @@ class MsAD(Client):
         user_entry = self.__get_entries(s_filter, ['distinguishedName'])[0]
         user_dn = user_entry['distinguishedName'][0]
         entry = {'member': [user_dn]}
+        mod = self._modify_add(group_dn, entry).unwrap()
 
-        return ADSuccessResult(self._modify_add(group_dn, entry).unwrap())
+        return ADSuccessResult(f'add_account_to_group::{mod}, user: {str(user_dn)}')
 
     @catch_exception
     def remove_account_from_group(self, s_filter: str, group_dn: str) -> ADSuccessResult:
@@ -146,7 +151,9 @@ class MsAD(Client):
         user_entry = self.__get_entries(s_filter, ['distinguishedName'])[0]
         user_dn = user_entry['distinguishedName'][0]
         entry = {'member': [user_dn]}
-        return ADSuccessResult(self._modify_delete(group_dn, entry).unwrap())
+        mod = self._modify_delete(group_dn, entry).unwrap()
+
+        return ADSuccessResult(f'remove_account_from_group::{mod} user: {user_dn.decode()}')
 
     def __str__(self) -> str:
         return f'uri: {self.uri}\nbind_dn: {self.bind_dn}\nauth_pass: {self.auth_pass}\n{self.state}'
