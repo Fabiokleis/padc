@@ -45,7 +45,7 @@ class Client:
 
         self.connection.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
         self.connection.start_tls_s()
-        return LdapSuccessResult("Started tls ldap server connection")
+        return LdapSuccessResult("_start_tls: Started tls ldap server connection")
 
     @catch_exception
     def _search(self, base: str, s_filter: str,  attr: Optional[List[str]], scope: Scope = Scope.SubTree) -> LdapSuccessResult:
@@ -61,7 +61,7 @@ class Client:
         assert self.state == State.Signed, "Cannot perform modify without a signed connection"
         modlist = [ (ldap.MOD_ADD, k, v) for k,v in entry.items() ]
         self.connection.modify_s(target_dn, modlist)
-        return LdapSuccessResult(f"Modified {target_dn}")
+        return LdapSuccessResult(f"_modify_add: {target_dn}")
 
     @catch_exception
     def _modify_delete(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
@@ -69,7 +69,7 @@ class Client:
         assert self.state == State.Signed, "Cannot perform modify without a signed connection"
         modlist = [ (ldap.MOD_DELETE, k, v) for k,v in entry.items() ]
         self.connection.modify_s(target_dn, modlist)
-        return LdapSuccessResult(f"Modified {target_dn}")
+        return LdapSuccessResult(f"_modify_delete: {target_dn}")
 
     @catch_exception
     def _modify_replace(self, target_dn: str, entry: Tuple[Dict[str, Any], Dict[str, Any]]) -> LdapSuccessResult:
@@ -80,7 +80,7 @@ class Client:
         modlist = modifyModlist(old, new)
         
         self.connection.modify_s(target_dn, modlist)
-        return LdapSuccessResult(f"Modified {target_dn}")
+        return LdapSuccessResult(f"_modify_replace: {target_dn}")
 
     @catch_exception
     def _add(self, target_dn: str, entry: Dict[str, Any]) -> LdapSuccessResult:
@@ -90,7 +90,7 @@ class Client:
 
         modlist = addModlist(entry)
         self.connection.add_s(target_dn, modlist)
-        return LdapSuccessResult(f"Added new entry at {target_dn}")
+        return LdapSuccessResult(f"_add: {target_dn}")
 
     @catch_exception
     def _delete(self, target_dn: str) -> LdapSuccessResult:
@@ -98,7 +98,7 @@ class Client:
         assert self.state == State.Signed, "Cannot perform delete without signed connection"
 
         self.connection.delete_s(target_dn)
-        return LdapSuccessResult(f"Deleted {target_dn} entry")
+        return LdapSuccessResult(f"_delete: {target_dn}")
 
     @catch_exception
     def _parse_dn(self, target_dn: str) -> LdapSuccessResult:
@@ -121,15 +121,15 @@ class Client:
         self.connection.simple_bind_s(new_bind, new_pass)
         self.state = State.Signed
 
-        return LdapSuccessResult(f"Binded in ldap server using {new_bind} and {new_pass}")
+        return LdapSuccessResult(f"_bind: {new_bind}")
 
     @catch_exception
     def _close(self) -> LdapSuccessResult:
         """Close connection with LDAP server, turn connection object invalid."""
 
-        assert self.state != State.Disconnected, "Cannot close connection without a connection"
+        assert self.state == State.Signed, "Cannot close connection without a connection"
         self.connection.unbind_s()
         self.state = State.Disconnected
 
-        return LdapSuccessResult("Unbinded connection in ldap server")
+        return LdapSuccessResult("_close: Unbinded connection in ldap server")
 
