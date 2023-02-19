@@ -1,11 +1,22 @@
 # padc
 
 cli using [python-ldap](https://github.com/python-ldap/python-ldap) lib to create connections with Active Directory
+this project use [poetry](https://python-poetry.org)
 
 ## Setup for development
+create virtual environment
 ```console
-python -m venv env && source env/bin/activate && pip install -e .
+python -m venv .venv
 ```
+activate environment
+```console
+poetry shell 
+```
+install `padc`
+```console
+poetry install
+```
+
 Create .env file inside root directory to establish a ldap connection
 ### .env
 ```
@@ -15,7 +26,8 @@ AUTH_PASS='Mypasswd@123'
 CA_PATH='' 
 BASE_DN='DC=RTS,DC=LOCAL'
 ```
-padc has logging_settings.ini inside `padc/config`
+
+`padc` has logging_settings.ini inside `padc/config`
 ```ini
 [loggers]
 keys = root
@@ -96,11 +108,6 @@ python -m unittest -v tests.test_msad
 ```
 
 ## Building
-Ensure that you have build package installed first
 ```console
-pip install --upgrade build
-```
-
-```console
-python -m build
+poetry build
 ```
