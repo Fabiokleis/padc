@@ -75,7 +75,7 @@ pacd users --help
 ```
 
 `padc` has in users subcommand some basic operations
-if one of the supported operations run with `--debug` option
+if one of the supported operations runs with `--debug` option so
 when errors occurs the traceback and exception will be raised.
 
 exp:
