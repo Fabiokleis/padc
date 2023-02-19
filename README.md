@@ -26,13 +26,16 @@ p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipula
 ./env/bin/pacd users --help
 ```
 
-`padc` has in users subcommand some basic operations:
+`padc` has in users subcommand some basic operations
+if one of the supported operations run with `--debug` option
+when errors occurs the traceback and exception will be raised.
 
+exp:
 ```console
-./env/bin/pacd users create -f .env "Pingu pythonico" "Pingupassword@123" -c 514 --debug
+./env/bin/padc users create -f .env "Pingu pythonico" "Pingupassword@123" -c 514 --debug
 ```
 ```console
-./env/bin/pacd users create-ldif -f .env --ldif example.ldif
+./env/bin/padc users create-ldif -f .env --ldif example.ldif
 ```
 ```console
 ./env/bin/padc users add-to-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL" --debug
@@ -41,13 +44,13 @@ p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipula
 ./env/bin/padc users remove-from-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL"
 ```
 ```console
-./env/bin/pacd users delete --file .env "Pingu pythonico"
+./env/bin/padc users delete --file .env "Pingu pythonico"
 ```
 ```console
-./env/bin/pacd users enable -f .env "Pingu" --debug
+./env/bin/padc users enable -f .env "Pingu" --debug
 ```
 ```console
-./env/bin/pacd users disable "Pingu" --debug
+./env/bin/padc users disable "Pingu" --debug
 ```
 
 ## Testing

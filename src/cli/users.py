@@ -71,7 +71,6 @@ def cli_create_user(
         ):
 
     """Create a new user account in Microsoft Active Directory Server."""
-    print(f"A new {name} will be created with {password}")
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))
@@ -101,7 +100,6 @@ def cli_delete_user(
         ):
 
     """Delete a user account in Microsoft Active Directory Server."""
-    print(f"A new {name} will be delete")
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))
@@ -131,7 +129,6 @@ def cli_disable_user(
         ):
 
     """Disable a user account in Microsoft Active Directory Server."""
-    print(f"This {name} account will be disable")
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))
@@ -161,7 +158,6 @@ def cli_enable_user(
         ):
 
     """Enable a user account in Microsoft Active Directory Server."""
-    print(f"This {name} account will be enable")
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))
@@ -192,7 +188,6 @@ def cli_add_to_group(
         ):
 
     """Add a user account to group in Microsoft Active Directory Server."""
-    print(f"This {name} account will be a member of {groupdn} group")
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))
@@ -223,7 +218,6 @@ def cli_remove_from_group(
         ):
 
     """Remove user account from group in Microsoft Active Directory Server."""
-    print(f"This {name} account will be remove from {groupdn} group")
     config = {}
     if from_file:
         config = load_env_variables_from_file(str(from_file))

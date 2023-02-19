@@ -33,51 +33,51 @@ def ensure_loaded_variables(config: Dict[str, Optional[str]]) -> Dict[str, str]:
 def create_user(name: str, passwd: str, config: Dict[str, str], acc: Acc, debug = False):
     """Create user in ms ad server."""
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
-    print(ldap.start_tls(config["CA_PATH"]).unwrap())
-    print(ldap.connect().unwrap())
-    print(ldap.create_user(name, passwd, acc).unwrap())
-    print(ldap.close().unwrap())
+    ldap.start_tls(config["CA_PATH"]).unwrap()
+    ldap.connect().unwrap()
+    ldap.create_user(name, passwd, acc).unwrap()
+    ldap.close().unwrap()
 
 def create_user_from_ldif(from_ldif: str, config: Dict[str, str], debug = False):
     """Create user in ms ad server from ldif file."""
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
-    print(ldap.start_tls(config["CA_PATH"]).unwrap())
-    print(ldap.connect().unwrap())
-    print(ldap.create_user_from_ldif(from_ldif).unwrap())
-    print(ldap.close().unwrap())
+    ldap.start_tls(config["CA_PATH"]).unwrap()
+    ldap.connect().unwrap()
+    ldap.create_user_from_ldif(from_ldif).unwrap()
+    ldap.close().unwrap()
 
 def add_account_to_group(name: str, group_dn: str, config: Dict[str, str], debug = False):
     """Add a user account to a group of Active directory server."""
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
-    print(ldap.start_tls(config["CA_PATH"]).unwrap())
-    print(ldap.connect().unwrap())
+    ldap.start_tls(config["CA_PATH"]).unwrap()
+    ldap.connect().unwrap()
     s_filter = f"(&(objectClass=User)(sAMAccountName={name}))"
-    print(ldap.add_account_to_group(s_filter, group_dn).unwrap())
-    print(ldap.close().unwrap())
+    ldap.add_account_to_group(s_filter, group_dn).unwrap()
+    ldap.close().unwrap()
 
 def remove_account_from_group(name: str, group_dn: str, config: Dict[str, str], debug = False):
     """Remove user account from a group of Active directory server."""
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
-    print(ldap.start_tls(config["CA_PATH"]).unwrap())
-    print(ldap.connect().unwrap())
+    ldap.start_tls(config["CA_PATH"]).unwrap()
+    ldap.connect().unwrap()
     s_filter = f"(&(objectClass=User)(sAMAccountName={name}))"
-    print(ldap.remove_account_from_group(s_filter, group_dn).unwrap())
-    print(ldap.close().unwrap())
+    ldap.remove_account_from_group(s_filter, group_dn).unwrap()
+    ldap.close().unwrap()
 
 def modify_acc(name: str, acc: Acc, config: Dict[str, str], debug = False):
     """Enable/Disable user account in ms ad server."""
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
-    print(ldap.start_tls(config["CA_PATH"]).unwrap())
-    print(ldap.connect().unwrap())
+    ldap.start_tls(config["CA_PATH"]).unwrap()
+    ldap.connect().unwrap()
     s_filter = f"(&(objectClass=User)(sAMAccountName={name}))"
-    print(ldap.modify_account_control(s_filter, acc).unwrap())
-    print(ldap.close().unwrap())
+    ldap.modify_account_control(s_filter, acc).unwrap()
+    ldap.close().unwrap()
 
 def delete_account(name: str, config: Dict[str, str], debug = False):
     """Delete user account in ms ad server."""
     ldap = MsAD(config["URI"], config["BASE_DN"], config["BIND_DN"], config["AUTH_PASS"], debug)
-    print(ldap.start_tls(config["CA_PATH"]).unwrap())
-    print(ldap.connect().unwrap())
-    print(ldap.delete_user(name).unwrap())
-    print(ldap.close().unwrap())
+    ldap.start_tls(config["CA_PATH"]).unwrap()
+    ldap.connect().unwrap()
+    ldap.delete_user(name).unwrap()
+    ldap.close().unwrap()
 
