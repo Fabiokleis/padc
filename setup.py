@@ -1,5 +1,7 @@
-from setuptools import setup, find_packages
+from setuptools import setup
+import setuptools
 
+setuptools.find_packages()
 
 with open("README.md", 'r') as f:
     long_description = f.read()
@@ -8,27 +10,16 @@ with open("LICENSE", 'r') as f:
     l = f.read()
 
 setup(
-    name="p_ad",
-    version="0.1.5",
-    description="lab using python-ldap lib to create connection with Active Directory",
+    name="padc",
+    version="0.3",
+    description="python active directory cli using python-ldap lib to manage ad servers",
     author="Fabio Kleis",
     author_email="fabiohkrc@gmail.com",
     url="https://github.com/Fabiokleis/p_ad",
     license=l,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    package_dir={'': 'src'},
-    packages=find_packages(
-                where='src',
-                exclude=['tests'], 
-                include=[
-                    'client', 
-                    'client.*', 
-                    'msad', 
-                    'msad.*'
-                    'cli', 
-                ]
-             ),
+    package_data={'padc': ['config/logging_settings.ini',]},
     install_requires=[
         'future==0.18.3',
         'pyad==0.6.0',
@@ -45,6 +36,6 @@ setup(
         'typer==0.7.0'
     ],
     entry_points={
-        'console_scripts': ['padc=cli.__main__:main']
+        'console_scripts': ['padc=padc.cli.__main__:main']
     }
 )
