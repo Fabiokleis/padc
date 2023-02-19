@@ -1,8 +1,8 @@
-# p_ad
+# padc
 
-lab using [python-ldap](https://github.com/python-ldap/python-ldap) lib to create connection with Active Directory
+cli using [python-ldap](https://github.com/python-ldap/python-ldap) lib to create connections with Active Directory
 
-## Setup
+## Setup for development
 ```console
 python -m venv env && source env/bin/activate && pip install -e .
 ```
@@ -15,15 +15,51 @@ AUTH_PASS='Mypasswd@123'
 CA_PATH='' 
 BASE_DN='DC=RTS,DC=LOCAL'
 ```
+padc has logging_settings.ini inside `padc/config`
+```ini
+[loggers]
+keys = root
+
+[handlers]
+keys = FileHandler,StreamHandler
+
+[formatters]
+keys = simpleFormatter
+
+[logger_root]
+level = DEBUG
+handlers = FileHandler,StreamHandler
+
+[handler_FileHandler]
+class     = FileHandler
+formatter = simpleFormatter
+args      = ('padc.log', 'a')
+
+[handler_StreamHandler]
+class     = StreamHandler
+formatter = simpleFormatter
+args      = (sys.stdout,)
+
+[formatter_simpleFormatter]
+format = %(asctime)s:%(levelname)s: %(message)s
+```
+
+## Install padc from pypi
+```console
+pip install padc
+```
+You can modify where log file will be created by editing logging_settings.ini
+the default file is created at current directory with name 'padc.log'
 
 ## Running
-p_ad has a cli written in [Typer](https://github.com/tiangolo/typer) to manipulate operations in AD
+cli written in [Typer](https://github.com/tiangolo/typer) to manipulate operations in AD
+
 ```console
-./env/bin/padc --help
+padc --help
 ```
 `users` is the main subcommand, every subcommand has a helper option
 ```console
-./env/bin/pacd users --help
+pacd users --help
 ```
 
 `padc` has in users subcommand some basic operations
@@ -32,25 +68,25 @@ when errors occurs the traceback and exception will be raised.
 
 exp:
 ```console
-./env/bin/padc users create -f .env "Pingu pythonico" "Pingupassword@123" -c 514 --debug
+padc users create -f .env "Pingu pythonico" "Pingupassword@123" -c 514 --debug
 ```
 ```console
-./env/bin/padc users create-ldif -f .env --ldif example.ldif
+padc users create-ldif -f .env --ldif example.ldif
 ```
 ```console
-./env/bin/padc users add-to-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL" --debug
+padc users add-to-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL" --debug
 ```
 ```console
-./env/bin/padc users remove-from-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL"
+padc users remove-from-group --file .env "Pingu" "CN=testgroup,CN=Users,DC=RTS,DC=LOCAL"
 ```
 ```console
-./env/bin/padc users delete --file .env "Pingu pythonico"
+padc users delete --file .env "Pingu pythonico"
 ```
 ```console
-./env/bin/padc users enable -f .env "Pingu" --debug
+padc users enable -f .env "Pingu" --debug
 ```
 ```console
-./env/bin/padc users disable "Pingu" --debug
+padc users disable "Pingu" --debug
 ```
 
 ## Testing
