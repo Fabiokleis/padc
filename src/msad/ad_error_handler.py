@@ -1,20 +1,9 @@
-import logging
 from typing import Any
+import logging
 
 from client.error_handler import LdapErrorResult
+from log import logger
 
-logger = logging.getLogger('padc')
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('padc.log')
-fh.setLevel(logging.INFO)
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-fh.setFormatter(formatter)
-ch.setFormatter(formatter)
-
-logger.addHandler(fh)
-logger.addHandler(ch)
 
 def match_level(message: Any, level: int = 10) -> None:
     """Match level of loggin and send message!"""
