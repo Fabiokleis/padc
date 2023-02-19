@@ -68,7 +68,9 @@ class MsAD(Client):
         entry = {}
         entry['objectclass'] = [b'top', b'person', b'organizationalPerson', b'user']
         entry['cn'] = user_name.encode('utf-8')
-        entry['sn'] = sn.encode('utf-8')
+
+        if sn:
+            entry['sn'] = sn.encode('utf-8')
         entry['unicodePwd'] = f'"{user_password}"'.encode('utf-16-le')
         entry['sAMAccountName'] = name.encode('utf-8')
         entry['givenName'] = name.encode('utf-8')
